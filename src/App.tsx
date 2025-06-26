@@ -1,3 +1,5 @@
-function App() {
-
+export function App() {
+  return (
+    <div>some</div>
+  )
 }
