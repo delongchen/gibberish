@@ -1,0 +1,72 @@
+$spacing-unit: 1rem;
+
+$breakpoints: (
+        mobile: 0,
+        tablet: 768px,
+        desktop: 1024px
+);
+
+$colors: (
+        primary: #3366cc,
+        header-bg: #f0f0f0,
+        footer-bg: #333,
+        content-bg: #ffffff,
+        aside-bg: #f8f8f8
+);
+
+$sizes: (
+        header-height: 70px,
+        footer-height: 60px,
+        aside-width: 240px,
+        base-radius: 8px,
+        base-shadow: 0 2px 4px rgba(0,0,0,0.1),
+        content-shadow: 0 2px 8px rgba(0,0,0,0.08)
+);
+
+$typography: (
+        base-size: 1rem,
+        heading-ratio: 1.25,
+);
+
+@mixin responsive-grid($layout: mobile) {
+  @if $layout == mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main"
+      "footer";
+  } @else if $layout == desktop {
+    grid-template-columns: map-get($sizes, aside-width) 1fr map-get($sizes, aside-width);
+    grid-template-areas:
+      "header header header"
+      "left main right"
+      "footer footer footer";
+  }
+}
+
+@mixin card-style($bg-color) {
+  padding: $spacing-unit;
+  background: $bg-color;
+  border-radius: map-get($sizes, base-radius);
+  box-shadow: map-get($sizes, base-shadow);
+}
+
+@mixin typography-scale($level: 0) {
+  font-size: map-get($typography, base-size) * pow(map-get($typography, heading-ratio), $level);
+  line-height: 1.4;
+  margin-bottom: $spacing-unit;
+}
+
+.container {
+  min-height: 100vh;
+  padding: $spacing-unit;
+  gap: $spacing-unit;
+  transition: grid-template-columns 0.3s ease;
+
+  @include responsive-grid(mobile);
+
+  @media (min-width: map-get($breakpoints, tablet)) {
+    @include responsive-grid(desktop);
+  }
+}
